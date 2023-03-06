@@ -1,3 +1,3 @@
 exports.contact = (req,res) => {
-    res.send("Contact Page");
+    res.send("Contact Page by Ayezad");
 }
