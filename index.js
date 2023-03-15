@@ -1,18 +1,21 @@
 //apiRouter.js
-
 const express = require("express")
+ const Path=require("path");
 const app = express()
+app.use(express.static(Path.join(__dirname,'view')))
 const indexRoutes = require("./routes/index.route");
-const util = require('util');
 
-var mysql = require("mysql");
-var connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Tayyab12.",
-    database: "webproject",
-});
-connection.connect();
+// const util = require('util');
+
+// var mysql = require("mysql");
+// var connection = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "Tayyab12.",
+//     database: "webproject",
+// });
+// connection.connect();
+
 /*
 var res;
 
@@ -49,19 +52,18 @@ console.log("User is :", res);  */
 //     }
  
 
-const query = util.promisify(connection.query).bind(connection);
+// const query = util.promisify(connection.query).bind(connection);
 
-(async () => {
-  try {
-    const rows = await query('SELECT * FROM user');
-    console.log(rows[0]);
-  } finally {
-    connection.end();
-  }
-})()
-
-
-
+// (async () => {
+//   try {
+//     const rows = await query('SELECT * FROM user');
+//     console.log(rows[0]);
+//   } finally {
+//     connection.end();
+//   }
+// })()
 
 app.use("/", indexRoutes)
-app.listen(3000)
+app.listen(3000,()=>{
+    console.log("Listening on port 3000")
+})
