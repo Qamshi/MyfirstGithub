@@ -1,3 +1,7 @@
 exports.About = (req,res) => {
-    res.send("About Page by Qamrosh");
+    res.sendFile("D:/Webproject/Web_Project/view/"+'about.html')
 }
+
+
+
+

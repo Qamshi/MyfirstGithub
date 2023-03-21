@@ -1,3 +1,3 @@
 exports.Feedback = (req,res) => {
-    res.send("Feedback Page by Qamrosh");
+    res.sendFile("D:/Webproject/Web_Project/view/"+'services.html')
 }
