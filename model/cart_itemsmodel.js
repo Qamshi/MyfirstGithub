@@ -1,26 +1,7 @@
-const {Sequelize , DataTypes } = require ("sequelize");
-
-const sequelize = new Sequelize(
-    'decor',
-    'root',
-    'Mysql123',
-     {
-       host: 'localhost',
-       dialect: 'mysql'
-     }
-   );
-
- sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.');
- }).catch((error) => {
-    console.error('Unable to connect to the database: ', error);
- });
-
-
-
+module.exports=(sequelize,Sequelize) => {
 const cart_items = sequelize.define("cart_items", {
    cart_id: {
-     type: DataTypes.INTEGER,
+     type: Sequelize.INTEGER,
      allowNull: false,
      references: {
         model: 'carts',
@@ -28,22 +9,18 @@ const cart_items = sequelize.define("cart_items", {
       }
    },
    Product_id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: false,
     references: {
         model: 'products',
         key: 'p_id'
     },
     cart_item_quantity: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
     },
 }
 });
+ return cart_items;
+}
 
-
-sequelize.sync().then(() => {
-   console.log('Order_items table created successfully!');
-}).catch((error) => {
-   console.error('Unable to create table : ', error);
-});
