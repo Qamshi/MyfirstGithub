@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
        dialect: 'mysql'
      }
    );
-
+   
  sequelize.authenticate().then(() => {
     console.log('Connection has been established successfully.');
  }).catch((error) => {
@@ -18,29 +18,31 @@ const sequelize = new Sequelize(
 
 
 
-const customer = sequelize.define("customer", {
-   c_id: {
+const product = sequelize.define("product", {
+   p_id: {
      type: DataTypes.INTEGER,
      allowNull: false,
      primaryKey : true,
      autoIncrement: true
    },
-   c_name: {
+   p_name: {
      type: DataTypes.STRING,
      allowNull: false,
    },
-   c_email: {
+   p_desc: {
      type: DataTypes.STRING,
      allowNull: false
    },
-   c_address: {
-     type: DataTypes.STRING,
-     allowNull: false
-   },
-   c_password: {
-    type: DataTypes.STRING,
+   p_price: {
+    type: DataTypes.FLOAT,
     allowNull: false
-  }
+  },
+  p_category: {
+   type: DataTypes.STRING,
+   allowNull: false
+ }
+ 
+
 });
 
 
