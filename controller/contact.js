@@ -1,3 +1,3 @@
 exports.contact = (req,res) => {
-    res.send("Contact Page");
+    res.sendFile("../Web_Project/view/"+'contact.html')
 }
