@@ -1,7 +1,6 @@
 //apiRouter.js
 const express = require("express");
 const cors = require("cors");
-const app = express();
 const customerRoutes = require("./routes/customer.routes");
 const orderRoutes = require("./routes/order.routes");
 const productRoutes = require("./routes/product.routes");
@@ -14,7 +13,7 @@ const db = require("./model/indexmodel.js");
 //   origin: "http://localhost:3000",
 // };
 
-// app.use(cors(corsOptions));
+ app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(express.json());
