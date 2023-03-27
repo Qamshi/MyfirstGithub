@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize")
 const sequelize = new Sequelize(
-    'webproject',
+    'decor',
     'root',
-    'Tayyab12.',
+    'Mysql123',
      {
        host: 'localhost',
        dialect: 'mysql'
