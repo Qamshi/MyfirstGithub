@@ -6,10 +6,8 @@ var router = require("express").Router();
 router.post("/", order.create);
 
 // Retrieve all Tutorials
-// router.get("/", order.findAll);
+ router.get("/", order.findAll);
 
-// Retrieve all published Tutorials
-router.get("/published", order.findAllPublished);
 
 // Retrieve a single Tutorial with id
 router.get("/:id", order.findOne);

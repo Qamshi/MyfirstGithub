@@ -1,25 +1,30 @@
 const express = require("express");
 const router = express.Router();
 
-//const {home} = require("../controller/index.controller");
 
-const {home} = require("../controller/home");
-const {contact} = require("../controller/contact");
+const customerRoutes = require("./customer.routes");
+const orderRoutes = require("./order.routes");
+const productRoutes = require("./product.routes");
+const order_itemsRoutes = require("./order_items.routes");
+const cartRoutes = require("./cart.routes");
+const cart_itemsRoutes = require("./cart_items.routes");
+const adminRoutes = require("./admin.routes");
+const feedbackRoutes = require("./feedback.routes");
+const paymentRoutes = require("./payment.routes");
 
-const {About} = require("../controller/About");
-const {Feedback} = require("../controller/Feedback");
+router.use("/api/customer",customerRoutes);
+router.use("/api/order",orderRoutes);
+ router.use("/api/product",productRoutes);
+ router.use("/api/order-items",order_itemsRoutes);
+ router.use("/api/cart",cartRoutes);
+ router.use("/api/cart-items",cart_itemsRoutes);
+ router.use("/api/admin",adminRoutes);
+ router.use("/api/feedback",feedbackRoutes);
+ router.use("/api/payment",paymentRoutes);
 
-const {Login} = require("../controller/Login");
-const {Products} = require("../controller/Products");
-
-
-
-router.get("/home", (req,res)=> home(req,res));
-router.get("/contact", (req,res)=> contact(req,res));
-router.get("/About", (req,res)=> About(req,res));
-router.get("/Feedback", (req,res)=> Feedback(req,res));
-router.get("/Login", (req,res)=> Login(req,res));
-router.get("/Products", (req,res)=> Products(req,res));
+router.get("/", (req, res) => {
+    res.json({ message: "Welcome to CRUD Application!" });
+  });
 
 
 module.exports=router;

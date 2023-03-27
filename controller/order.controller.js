@@ -1,27 +1,28 @@
 const db = require("../model/indexmodel");
-const order = db.order;
-// const Op = db.Sequelize.Op;
+const Customer = db.customer;
+const Order = db.order;
+const Op = db.Sequelize.Op;
 
-// Create and Save a new Tutorial
+// Create and Save a new Order
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.o_id) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
     return;
   }
 
-  // Create a Tutorial
+  // Create a Order
   const order = {
     o_id: req.body.o_id,
     o_status: req.body.o_status,
+    c_id :  req.body.c_id
     //o_status: req.body.o_status,
-
   };
 
-  // Save Tutorial in the database
-  order.create(order)
+  // Save Order in the database
+  Order.create(order)
     .then((data) => {
       res.send(data);
     })
@@ -33,50 +34,59 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Tutorials from the database.
-// exports.findAll = (req, res) => {
-//   const title = req.query.title;
-//   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+//Retrieve all Order from the database.
+exports.findAll = (req, res) => {
+  const o_status = req.query.o_status;
+  var condition = o_status ? { o_status: { [Op.like]: `%${o_status}%` } } : null;
 
-//   order.findAll({ where: condition })
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving order.",
-//       });
-//     });
-// };
+  Order.findAll({
+    where: condition,
+    include: [
+      {
+        model: Customer,
+        attributes: ["c_id", "c_name", "c_email", "c_address"]
+      }
+    ]
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Orders."
+      });
+    });
+};
 
-// Find a single Tutorial with an id
+// Find a single Order with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  order.findByPk(id)
+  Order.findByPk(id)
     .then((data) => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find order with id=${id}.`,
+          message: `Cannot find order with o_id=${id}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving order with id=" + id,
+        message: "Error retrieving order with o_id=" + id,
       });
     });
 };
 
-// Update a Tutorial by the id in the request
+
+// Update a Order by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  order.update(req.body, {
-    where: { id: id },
+  Order.update(req.body, {
+    where: { o_id: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -96,12 +106,12 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a Tutorial with the specified id in the request
+// Delete a Order with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  order.destroy({
-    where: { id: id },
+  Order.destroy({
+    where: { o_id: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -121,9 +131,9 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Tutorials from the database.
+// Delete all Order from the database.
 exports.deleteAll = (req, res) => {
-  order.destroy({
+  Order.destroy({
     where: {},
     truncate: false,
   })
@@ -134,20 +144,6 @@ exports.deleteAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while removing all order.",
-      });
-    });
-};
-
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  order.findAll({ where: { published: true } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving order.",
       });
     });
 };
