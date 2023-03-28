@@ -10,6 +10,8 @@ db.cart_items = require("./cart_itemsmodel.js")(db.sequelize,db.Sequelize);
 db.payment = require("./paymentmodel.js")(db.sequelize,db.Sequelize);
 db.feedback = require("./feedbackmodel.js")(db.sequelize,db.Sequelize);
 db.admin = require("./adminmodel.js")(db.sequelize,db.Sequelize);
+db.role = require("./rolemodel.js")(db.sequelize,db.Sequelize);
+db.user = require("./usermodel.js")(db.sequelize,db.Sequelize);
 
 
 
@@ -75,7 +77,17 @@ db.admin = require("./adminmodel.js")(db.sequelize,db.Sequelize);
   db.payment.belongsTo(db.order, {
     foreignKey: 'order_id'
   });
-                              
+  db.role.belongsToMany(db.user, {
+    through: "user_roles",
+    foreignKey: "roleId",
+    otherKey: "userId"
+  });
+  db.user.belongsToMany(db.role, {
+    through: "user_roles",
+    foreignKey: "userId",
+    otherKey: "roleId"
+  });
+  db.ROLES = ["user", "admin", "moderator"];                            
 
 module.exports = db
 
