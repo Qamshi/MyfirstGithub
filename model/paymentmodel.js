@@ -1,9 +1,10 @@
-module.exports=(sequelize,Sequelize) => {
-    const payment = sequelize.define("payment", {
+module.exports = (sequelize, Sequelize) => {
+    const payment = sequelize.define("payment", 
+    {
       pay_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        primaryKey : true,
+        primaryKey: true,
         autoIncrement: true
       },
       order_id: {
@@ -16,21 +17,13 @@ module.exports=(sequelize,Sequelize) => {
       },
       amount: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       method: {
         type: Sequelize.STRING,
         allowNull: false
       }
-   });
-   return payment;
+    });
+    return payment;
   };
-  
-  
-  
-  
-  
-  
-  
-  
   

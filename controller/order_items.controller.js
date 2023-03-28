@@ -1,11 +1,12 @@
 const db = require("../model/indexmodel");
-const order_items = db.order_items;
-// const Op = db.Sequelize.Op;
+const Order = require("../model/ordermodel");
+const Order_items = db.order_items;
+const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.item_quantity) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
@@ -14,13 +15,14 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const order_items = {
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false,
+    item_quantity: req.body.item_quantity,
+    order_id: req.body.order_id,
+    product_id: req.body.product_id
+
   };
 
   // Save Tutorial in the database
-  order_items.create(order_items)
+  Order_items.create(order_items)
     .then((data) => {
       res.send(data);
     })
@@ -32,28 +34,28 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Tutorials from the database.
-// exports.findAll = (req, res) => {
-//   const title = req.query.title;
-//   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+//Retrieve all Tutorials from the database.
+exports.findAll = (req, res) => {
+  const item_quantity = req.query.item_quantity;
+  var condition = item_quantity ? { item_quantity: { [Op.like]: `%${item_quantity}%` } } : null;
 
-//   order_items.findAll({ where: condition })
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving order_items.",
-//       });
-//     });
-// };
+  Order_items.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving order_items.",
+      });
+    });
+};
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  order_items.findByPk(id)
+  Order_items.findByPk(id)
     .then((data) => {
       if (data) {
         res.send(data);
@@ -74,8 +76,8 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  order_items.update(req.body, {
-    where: { id: id },
+  Order_items.update(req.body, {
+    where: { order_id: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -99,8 +101,8 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  order_items.destroy({
-    where: { id: id },
+  Order_items.destroy({
+    where: { order_id: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -122,7 +124,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-  order_items.destroy({
+  Order_items.destroy({
     where: {},
     truncate: false,
   })
@@ -133,20 +135,6 @@ exports.deleteAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while removing all order_items.",
-      });
-    });
-};
-
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  order_items.findAll({ where: { published: true } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving order_items.",
       });
     });
 };

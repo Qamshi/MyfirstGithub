@@ -1,12 +1,13 @@
-module.exports=(sequelize,Sequelize) => {
-    const feedback = sequelize.define("feedback", {
-       f_id: {
-         type: Sequelize.INTEGER,
-         allowNull: false,
-         primaryKey : true,
-         autoIncrement: true
-       },
-       order_id: {
+module.exports = (sequelize, Sequelize) => {
+    const feedback = sequelize.define("feedback", 
+    {
+      f_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      order_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -14,19 +15,19 @@ module.exports=(sequelize,Sequelize) => {
           key: 'o_id'
         }
       },
-       comments: {
-         type: Sequelize.STRING,
-         allowNull: false
-       },
-       admin_id: {
+      comments: {
+        type: Sequelize.STRING(200),
+        allowNull: false,
+      },
+      admin_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'admin',
+          model: 'admins',
           key: 'id'
         }
       }
-
     });
-    return admin;
-   }
+    return feedback;
+  };
+  

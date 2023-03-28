@@ -1,11 +1,11 @@
 const db = require("../model/indexmodel");
-const Customer = db.customer;
+const Payment = db.payment;
  const Op = db.Sequelize.Op;
 
 // Create and Save a new Customer
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.c_name) {
+  if (!req.body.pay_id) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
@@ -13,40 +13,39 @@ exports.create = (req, res) => {
   }
 
   // Create a Customer
-  const customer = {
-    c_id: req.body.c_id,
-    c_name: req.body.c_name,
-    c_email: req.body.c_email,
-    c_address: req.body.c_address,
-    c_password: req.body.c_password
+  const payment = {
+    pay_id: req.body.pay_id,
+    order_id: req.body.order_id,
+    amount: req.body.amount,
+    method : req.body.method
   };
 
   // Inserting Customer  in the database
-  Customer.create(customer)
+  Payment.create(payment)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the customer.",
+          err.message || "Some error occurred while creating the Payment.",
       });
     });
 };
 
 //Retrieve all Customers from the database. by using http://localhost:3000/api/customer?c_name=Hadeed
 exports.findAll = (req, res) => {
-  const c_name = req.query.c_name;
-  var condition = c_name ? { c_name: { [Op.like]: `%${c_name}%` } } : null;
+  const method = req.query.method;
+  var condition = method ? { method: { [Op.like]: `%${method}%` } } : null;
 
-  Customer.findAll({ where: condition })
+  Payment.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving customer.",
+          err.message || "Some error occurred while retrieving Payment.",
       });
     });
 };
@@ -59,19 +58,19 @@ exports.findOne = (req, res) => {
   const id = req.params.id;
   
 
-  Customer.findByPk(id)
+  Payment.findByPk(id)
     .then((data) => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Customer with id=${id}.`,
+          message: `Cannot find Payment with id=${id}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving customer with id=" + id,
+        message: "Error retrieving Payment with id=" + id,
       });
     });
 };
@@ -80,23 +79,23 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Customer.update(req.body, {
-    where: { c_id: id },
+  Payment.update(req.body, {
+    where: { pay_id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Customer was updated successfully.",
+          message: "Payment was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update customer with id=${id}. Maybe Customer was not found or req.body is empty!`,
+          message: `Cannot update Payment with id=${id}. Maybe Customer was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating customer with id=" + id,
+        message: "Error updating Payment with id=" + id,
       });
     });
 };
@@ -106,40 +105,40 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Customer.destroy({
-    where: { c_id: id },
+  Payment.destroy({
+    where: { pay_id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "customer was deleted successfully!",
+          message: "Payment was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete customer with id=${id}. Maybe customer was not found!`,
+          message: `Cannot delete Payment with id=${id}. Maybe customer was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete customer with id=" + id,
+        message: "Could not delete Payment with id=" + id,
       });
     });
 };
 
 // Delete all Customers from the database.
 exports.deleteAll = (req, res) => {
-  Customer.destroy({
+    Payment.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} customer were deleted successfully!` });
+      res.send({ message: `${nums} Payment were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all customer.",
+          err.message || "Some error occurred while removing all Payment.",
       });
     });
 };

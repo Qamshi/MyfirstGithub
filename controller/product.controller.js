@@ -1,11 +1,11 @@
 const db = require("../model/indexmodel");
-const product = db.product;
-// const Op = db.Sequelize.Op;
+const Product = db.product;
+const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.p_name) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
@@ -14,13 +14,15 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const product = {
-    title: req.body.title,
-    description: req.body.description,
-    published: req.body.published ? req.body.published : false,
+    p_id: req.body.p_id,
+    p_name: req.body.p_name,
+    p_desc : req.body.p_desc,
+    p_price : req.body.p_price,
+    p_category : req.body.p_category
   };
 
   // Save Tutorial in the database
-  product.create(product)
+  Product.create(product)
     .then((data) => {
       res.send(data);
     })
@@ -32,28 +34,28 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Tutorials from the database.
-// exports.findAll = (req, res) => {
-//   const title = req.query.title;
-//   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+//Retrieve all Tutorials from the database.
+exports.findAll = (req, res) => {
+  const p_name = req.query.p_name;
+  var condition = p_name ? { p_name: { [Op.like]: `%${p_name}%` } } : null;
 
-//   product.findAll({ where: condition })
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving product.",
-//       });
-//     });
-// };
+  Product.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving product.",
+      });
+    });
+};
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  product.findByPk(id)
+  Product.findByPk(id)
     .then((data) => {
       if (data) {
         res.send(data);
@@ -74,8 +76,8 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  product.update(req.body, {
-    where: { id: id },
+  Product.update(req.body, {
+    where: { p_id: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -99,8 +101,8 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  product.destroy({
-    where: { id: id },
+  Product.destroy({
+    where: { p_id: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -122,7 +124,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-  product.destroy({
+  Product.destroy({
     where: {},
     truncate: false,
   })
@@ -133,20 +135,6 @@ exports.deleteAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while removing all product.",
-      });
-    });
-};
-
-// Find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  product.findAll({ where: { published: true } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving product.",
       });
     });
 };

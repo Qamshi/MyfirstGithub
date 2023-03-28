@@ -1,11 +1,11 @@
 const db = require("../model/indexmodel");
-const Customer = db.customer;
+const Feedback = db.feedback;
  const Op = db.Sequelize.Op;
 
 // Create and Save a new Customer
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.c_name) {
+  if (!req.body.f_id) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
@@ -13,40 +13,39 @@ exports.create = (req, res) => {
   }
 
   // Create a Customer
-  const customer = {
-    c_id: req.body.c_id,
-    c_name: req.body.c_name,
-    c_email: req.body.c_email,
-    c_address: req.body.c_address,
-    c_password: req.body.c_password
+  const feedback = {
+    f_id: req.body.f_id,
+    order_id: req.body.order_id,
+    comments: req.body.comments,
+    admin_id: req.body.admin_id
   };
 
   // Inserting Customer  in the database
-  Customer.create(customer)
+  Feedback.create(feedback)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the customer.",
+          err.message || "Some error occurred while creating the Feedback.",
       });
     });
 };
 
 //Retrieve all Customers from the database. by using http://localhost:3000/api/customer?c_name=Hadeed
 exports.findAll = (req, res) => {
-  const c_name = req.query.c_name;
-  var condition = c_name ? { c_name: { [Op.like]: `%${c_name}%` } } : null;
+  const f_id = req.query.f_id;
+  var condition = f_id ? { f_id: { [Op.like]: `%${f_id}%` } } : null;
 
-  Customer.findAll({ where: condition })
+  Feedback.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving customer.",
+          err.message || "Some error occurred while retrieving Feedback.",
       });
     });
 };
@@ -59,19 +58,19 @@ exports.findOne = (req, res) => {
   const id = req.params.id;
   
 
-  Customer.findByPk(id)
+  Feedback.findByPk(id)
     .then((data) => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Customer with id=${id}.`,
+          message: `Cannot find Feedback with id=${id}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving customer with id=" + id,
+        message: "Error retrieving Feedback with id=" + id,
       });
     });
 };
@@ -80,23 +79,23 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Customer.update(req.body, {
-    where: { c_id: id },
+  Feedback.update(req.body, {
+    where: { f_id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Customer was updated successfully.",
+          message: "Feedback was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update customer with id=${id}. Maybe Customer was not found or req.body is empty!`,
+          message: `Cannot update Feedback with id=${id}. Maybe Customer was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating customer with id=" + id,
+        message: "Error updating Feedback with id=" + id,
       });
     });
 };
@@ -106,40 +105,40 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Customer.destroy({
-    where: { c_id: id },
+  Feedback.destroy({
+    where: { f_id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "customer was deleted successfully!",
+          message: "Feedback was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete customer with id=${id}. Maybe customer was not found!`,
+          message: `Cannot delete Feedback with id=${id}. Maybe customer was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete customer with id=" + id,
+        message: "Could not delete Feedback with id=" + id,
       });
     });
 };
 
 // Delete all Customers from the database.
 exports.deleteAll = (req, res) => {
-  Customer.destroy({
+    Feedback.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} customer were deleted successfully!` });
+      res.send({ message: `${nums} Feedback were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all customer.",
+          err.message || "Some error occurred while removing all Feedback.",
       });
     });
 };
