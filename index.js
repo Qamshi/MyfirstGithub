@@ -7,7 +7,7 @@ const indexroutes = require("./routes/index.route");
 
 var corsOptions = {
   origin: "http://localhost:3000",
-}
+};
 
  app.use(cors(corsOptions));
 
@@ -35,3 +35,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port http://127.0.01:${PORT} .`);
 });
+

@@ -12,6 +12,7 @@ const adminRoutes = require("./admin.routes");
 const feedbackRoutes = require("./feedback.routes");
 const paymentRoutes = require("./payment.routes");
 
+
 router.use("/api/customer",customerRoutes);
 router.use("/api/order",orderRoutes);
  router.use("/api/product",productRoutes);
