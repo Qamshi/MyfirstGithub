@@ -3,16 +3,16 @@
 const express = require("express")
 const app = express()
 const indexRoutes = require("./routes/index.route");
-const util = require('util');
+// const util = require('util');
 
-var mysql = require("mysql");
-var connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Tayyab12.",
-    database: "webproject",
-});
-connection.connect();
+// var mysql = require("mysql");
+// var connection = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "Tayyab12.",
+//     database: "webproject",
+// });
+// connection.connect();
 /*
 var res;
 
@@ -49,16 +49,16 @@ console.log("User is :", res);  */
 //     }
  
 
-const query = util.promisify(connection.query).bind(connection);
+// const query = util.promisify(connection.query).bind(connection);
 
-(async () => {
-  try {
-    const rows = await query('SELECT * FROM user');
-    console.log(rows[0]);
-  } finally {
-    connection.end();
-  }
-})()
+// (async () => {
+//   try {
+//     const rows = await query('SELECT * FROM user');
+//     console.log(rows[0]);
+//   } finally {
+//     connection.end();
+//   }
+// })()
 
 
 
