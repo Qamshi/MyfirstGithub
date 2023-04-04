@@ -11,6 +11,8 @@ const cart_itemsRoutes = require("./cart_items.routes");
 const adminRoutes = require("./admin.routes");
 const feedbackRoutes = require("./feedback.routes");
 const paymentRoutes = require("./payment.routes");
+const userRoutes = require("./user.routes");
+
 
 router.use("/api/customer",customerRoutes);
 router.use("/api/order",orderRoutes);
@@ -21,6 +23,7 @@ router.use("/api/order",orderRoutes);
  router.use("/api/admin",adminRoutes);
  router.use("/api/feedback",feedbackRoutes);
  router.use("/api/payment",paymentRoutes);
+ router.use("/api/user",userRoutes);
 router.get("/", (req, res) => {
     res.json({ message: "Welcome to CRUD Application!" });
   });

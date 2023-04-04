@@ -64,7 +64,7 @@ const cors = require("cors");
 const app = express();
 
 const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
+//const userRoutes = require('./routes/user.routes');
 
 const db = require("./model/indexmodel.js");
 const indexRoutes = require("./routes/index.route");
@@ -91,27 +91,27 @@ db.sequelize
   });
 
 app.use("/",indexRoutes);
-authRoutes(app);
-userRoutes(app);
+// authRoutes(app);
+// userRoutes(app);
 
-const Role = db.role;
+// const Role = db.role;
 
-db.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync Db');
-  initial();
-});
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync Db');
+//   initial();
+// });
 
-function initial() {
-  Role.create({
-    id: 1,
-    name: "user"
-  });
+// function initial() {
+//   Role.create({
+//     id: 1,
+//     name: "user"
+//   });
  
-  Role.create({
-    id: 3,
-    name: "admin"
-  });
-}
+//   Role.create({
+//     id: 3,
+//     name: "admin"
+//   });
+// }
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
