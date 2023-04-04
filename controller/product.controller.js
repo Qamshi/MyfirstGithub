@@ -36,8 +36,8 @@ exports.create = (req, res) => {
 
 //Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-  const p_name = req.query.p_name;
-  var condition = p_name ? { p_name: { [Op.like]: `%${p_name}%` } } : null;
+  const p_category = req.query.p_category;
+  var condition = p_category ? { p_category: { [Op.eq]: p_category } } : null;
 
   Product.findAll({ where: condition })
     .then((data) => {
@@ -50,6 +50,28 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+exports.Products = async (req, res, next) => {
+  const { p_category } = req.query;
+  const paramQuerySQL = {};
+  let limit;
+  let offset;
+
+  // filtering - [p_category]
+  if (p_category) {
+    paramQuerySQL.where = { p_category };
+  }
+
+  try {
+    const data = await Product.findAll(paramQuerySQL);
+    if (data) {
+      res.status(200).json({ data });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
