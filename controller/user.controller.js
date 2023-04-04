@@ -71,7 +71,7 @@ exports.findAll = (req, res) => {
   User.findAndCountAll({ 
     offset : page*size,
     limit : page*1
-   
+  
    })
     .then((data) => {
       res.send(data);
