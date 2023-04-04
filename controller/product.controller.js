@@ -37,30 +37,39 @@ exports.create = (req, res) => {
 //Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
   const p_category = req.query.p_category;
-  var condition = p_category ? { p_category: { [Op.eq]: p_category } } : null;
+  const p_price = req.query.p_price;
+  const categoryCondition = p_category ? { p_category: { [Op.eq]: p_category } } : null;
+  const priceCondition = p_price ? { p_price: { [Op.gte]: p_price } } : null;
 
-  Product.findAll({ where: condition })
+  Product.findAll({ where: categoryCondition || priceCondition })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving product.",
+          err.message || "Some error occurred while retrieving products.",
       });
     });
 };
 
+
 exports.Products = async (req, res, next) => {
   const { p_category } = req.query;
+  const { p_price } = req.query;
   const paramQuerySQL = {};
-  let limit;
-  let offset;
+  let limit = req.query.limit ? parseInt(req.query.limit) : null;
+  let offset = req.query.offset ? parseInt(req.query.offset) : null;
 
-  // filtering - [p_category]
+  // filtering - [p_category or p_price]
   if (p_category) {
     paramQuerySQL.where = { p_category };
+  } else if (p_price) {
+    paramQuerySQL.where = { p_price: { [Op.gte]: p_price } };
   }
+
+  paramQuerySQL.limit = limit;
+  paramQuerySQL.offset = offset;
 
   try {
     const data = await Product.findAll(paramQuerySQL);
@@ -71,6 +80,7 @@ exports.Products = async (req, res, next) => {
     next(err);
   }
 };
+
 
 
 // Find a single Tutorial with an id
