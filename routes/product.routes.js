@@ -21,3 +21,7 @@ router.delete("/:id", product.delete);
 router.delete("/", product.deleteAll);
 
 module.exports = router;
+
+
+
+
